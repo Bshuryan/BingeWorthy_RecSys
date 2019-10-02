@@ -46,7 +46,7 @@ def get_index(title):
         return None
 
 def main():
-    train_movie_info = pd.read_csv('movie_dataset.csv')
+    # train_movie_info = pd.read_csv('movie_dataset.csv')
     # print(train_movie_info.head())
     # print(train_movie_info.tail())
     sim_list = get_movie_recs('Abc')
