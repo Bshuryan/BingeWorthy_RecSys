@@ -1,8 +1,4 @@
-# import tensorflow as tf
-import numpy as np
 import pandas as pd
-import sklearn
-import math
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import  cosine_similarity
 import itertools
@@ -10,7 +6,7 @@ import itertools
 
 # temporary features
 features_all = ['genres', 'keywords', 'release_date', 'cast', 'director']
-train_movie_info = pd.read_csv('movie_dataset.csv')
+train_movie_info = pd.read_csv('movie_dataset_rec.csv')
 
 
 def get_movie_recs(base_movie):
@@ -29,7 +25,8 @@ def get_movie_recs(base_movie):
 
 
 def feature_bag(example):
-    return str(example['genres']) + str(example['keywords']) + str(example['release_date']) + str(example['cast'])+ str(example['director'])
+    return str(example['genres']) + str(example['keywords']) + str(example['genres']) + str(example['keywords']) + \
+           str(example['release_date']) + str(example['cast']) + str(example['director'])
 
 
 def get_title(index):
@@ -45,15 +42,20 @@ def get_index(title):
     except IndexError:
         return None
 
+
+def parse_description(description):
+    # keyword extraction to obtain essential words from movie/tv show descriptions
+    pass
+
+
 def main():
-    # train_movie_info = pd.read_csv('movie_dataset.csv')
-    # print(train_movie_info.head())
-    # print(train_movie_info.tail())
-    sim_list = get_movie_recs('Abc')
+    sim_list = get_movie_recs('Batman Begins')
 
-    for movie in itertools.islice(sim_list, 0, 10):
-        print(get_title(movie[0]))
-
+    if sim_list:
+        for movie in itertools.islice(sim_list, 0, 10):
+            print(get_title(movie[0]))
+    else:
+        print("Movie not found!")
 
 
 if __name__ == '__main__':
