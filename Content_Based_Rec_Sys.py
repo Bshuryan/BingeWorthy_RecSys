@@ -3,51 +3,63 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-# temporary features
-features_all = ['genres', 'keywords', 'release_date', 'cast', 'director']
-train_movie_info = pd.read_csv('movie_dataset_rec.csv')
-
+# features- MUST ADD DESCRIPTION/KEYWORDS
+tv_features = ['genre', 'runtime', 'director', 'cast', 'keywords']
+features_all = ['genres', 'description', 'release_date', 'cast', 'director', 'runtime', ]
+train_tv_info = pd.read_csv('TV_Data.csv')
+# train_movie_info = pd.read_csv('movie_dataset_rec.csv')
 
 
 def get_movie_recs(base_movie):
-    base_index = get_index(base_movie)
+    base_index = get_index(base_movie) - 1
 
-    for feature in features_all:
-        train_movie_info[feature] = train_movie_info[feature].fillna('')
-        train_movie_info['bag'] = train_movie_info.apply(feature_bag, axis=1)
+    for feature in tv_features:
+        train_tv_info[feature] = train_tv_info[feature].fillna('')
+        train_tv_info['bag'] = train_tv_info.apply(feature_bag, axis=1)
 
     count_vectorizer = CountVectorizer()
-    count_matrix = count_vectorizer.fit_transform(train_movie_info['bag'])
+    count_matrix = count_vectorizer.fit_transform(train_tv_info['bag'])
     similarity = cosine_similarity(count_matrix)
+    print(similarity[0])
+    print(similarity[16])
+    print(len(similarity[1]))
     sim_scores = list(enumerate(similarity[base_index]))
     sorted_sim = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:]
+    print(sorted_sim)
     if sorted_sim:
         recs_top = map(get_title, sorted_sim[:10])
-        recs_top_full = list(map(get_additional_info, recs_top))
+        # recs_top_full = list(map(get_additional_info, recs_top))
         # print(recs_top_full)
         # print('\n'.join(list(recs_top_full)))
     else:
-        print("Movie not found!")
-    return recs_top_full
+        raise ValueError('Show not found!')
+    # return recs_top_full
+    return list(recs_top)
 
 
 def feature_bag(example):
-    return str(example['genres']) * 6 + str(example['keywords']) * 5 + str(example['keywords']) + \
-            str(example['cast']) * 3 + str(example['director']) * 3
+    return str(example['genre']) * 10 + \
+            str(example['cast']) + str(example['director']) + str(example['runtime']) + 10 * str(example['keywords'])
 
 
 # modified to accept a tuple where the first argument is the index
 def get_title(index):
     # print(index)
     try:
-        return train_movie_info[train_movie_info.index == index[0]]['title'].values[0]
+        return train_tv_info[train_tv_info.Id == index[0]]['name'].values[0]
     except IndexError:
         return None
 
 
 def get_index(title):
     try:
-        return train_movie_info[train_movie_info.title == title]['index'].values[0]
+        return train_tv_info[train_tv_info.name == title]['Id'].values[0]
+    except IndexError:
+        return None
+
+def _get_index(title):
+    try:
+        return train_tv_info[train_tv_info.title == title]['index'].values[0]
     except IndexError:
         return None
 
@@ -71,8 +83,9 @@ def parse_description(description):
     pass
 
 
+# serious debugging - recs not even close here for daredevil/punisher/jessica jones
 def main():
-    movie_recs_final = get_movie_recs('Iron Man')
+    movie_recs_final = get_movie_recs("Daredevil")
     print(movie_recs_final)
 
 
