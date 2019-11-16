@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f4f4103-1859-476f-a18f-7f8d8d5c4705" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TV_Data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content_Based_Rec_Sys.py" beforeDir="false" afterPath="$PROJECT_DIR$/Content_Based_Rec_Sys.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TV_Data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/TV_Data.csv" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -224,7 +224,8 @@
       <workItem from="1572213021043" duration="251000" />
       <workItem from="1573403398361" duration="4691000" />
       <workItem from="1573598491634" duration="377000" />
-      <workItem from="1573598918102" duration="638000" />
+      <workItem from="1573598918102" duration="736000" />
+      <workItem from="1573930128831" duration="1691000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1569362851012</created>
@@ -261,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572213201034</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="More work on rec system. Begun integrating with data to be used in app.">
+      <created>1573656717554</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1573656717555</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -296,6 +304,7 @@
     <MESSAGE value="Added new, more compact csv file for movie suggestions. Began implementation of content-based recommendation system." />
     <MESSAGE value="Improvements to current content-based recommendation system. Began adding skeleton and implementation for more advanced matrix-factorization, collaborative and user-based recommendation system." />
     <MESSAGE value="Improvements to current content-based recommendation system to make more portable. Began Swift integration work." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improvements to current content-based recommendation system to make more portable. Began Swift integration work." />
+    <MESSAGE value="More work on rec system. Begun integrating with data to be used in app." />
+    <option name="LAST_COMMIT_MESSAGE" value="More work on rec system. Begun integrating with data to be used in app." />
   </component>
 </project>

@@ -1,4 +1,5 @@
 import pandas as pd
+import csv
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -11,7 +12,7 @@ train_tv_info = pd.read_csv('TV_Data.csv')
 
 
 def get_movie_recs(base_movie):
-    base_index = get_index(base_movie) - 1
+    base_index = get_index(base_movie)
 
     for feature in tv_features:
         train_tv_info[feature] = train_tv_info[feature].fillna('')
@@ -20,14 +21,14 @@ def get_movie_recs(base_movie):
     count_vectorizer = CountVectorizer()
     count_matrix = count_vectorizer.fit_transform(train_tv_info['bag'])
     similarity = cosine_similarity(count_matrix)
-    print(similarity[0])
-    print(similarity[16])
-    print(len(similarity[1]))
+    # print(similarity[0])
+    # print(similarity[16])
+    # print(len(similarity[1]))
     sim_scores = list(enumerate(similarity[base_index]))
     sorted_sim = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:]
-    print(sorted_sim)
+    # print(sorted_sim)
     if sorted_sim:
-        recs_top = map(get_title, sorted_sim[:10])
+        recs_top = map(get_title, sorted_sim[:6])
         # recs_top_full = list(map(get_additional_info, recs_top))
         # print(recs_top_full)
         # print('\n'.join(list(recs_top_full)))
@@ -66,6 +67,7 @@ def _get_index(title):
 
 # function that will be mapped to movies array in order to get description, director, actors?, year, genre, runtime
 # returns: [title, genres, overview, year, director, actors, runtime]
+""""
 def get_additional_info(movie_title):
     # print(train_movie_info[train_movie_info.title == movie_title]['release_date'])
     movie_rundown = [movie_title, train_movie_info[train_movie_info.title == movie_title]['genres'].values[0],
@@ -75,19 +77,28 @@ def get_additional_info(movie_title):
                      train_movie_info[train_movie_info.title == movie_title]['cast'].values[0],
                      str(train_movie_info[train_movie_info.title == movie_title]['runtime'].values[0]).split('.')[0] + ' min']
     return movie_rundown
+"""
+
+def export_recs_full():
+    with open('tv_recs_full.csv', 'w') as recs:
+        rec_writer = csv.writer(recs)
+        header = ['name', 'recs']
+        rec_writer.writerow(header)
+
+        for i in range(100):
+            current_title = get_title((i, 0))
+            top_six_recs = get_movie_recs(current_title)
+            rec_writer.writerow([current_title, top_six_recs])
+        recs.close()
 
 
 
-def parse_description(description):
-    # keyword extraction to obtain essential words from movie/tv show descriptions
-    pass
 
 
-# serious debugging - recs not even close here for daredevil/punisher/jessica jones
+
+
 def main():
-    movie_recs_final = get_movie_recs("Daredevil")
-    print(movie_recs_final)
-
+    export_recs_full()
 
 
 
